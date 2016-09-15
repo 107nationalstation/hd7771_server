@@ -27,12 +27,10 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=812;C++;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Fmain.h;0;4
-FILE_NAME_1=4370;C;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Fmain.c;0;4
-FILE_NAME_2=4789;C;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Fsample.c;0;4
-FILE_NAME_3=355;C;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Ftreap_test.c;0;4
-FILE_NAME_4=753;C;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Ftreap.c;0;4
+current_page=2
+FILE_NAME_0=614;C++;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Fmain.h;0;4
+FILE_NAME_1=10093;C;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Fmain.c;0;4
+FILE_NAME_2=174;C;0;EUTF-8;1;1;0;%2Fhome%2Fhd7771%2FProjects%2Fhd7771_server%2Ftreap_test.c;0;4
 
 [VTE]
 last_dir=/home/hd7771/Projects/hd7771_server
