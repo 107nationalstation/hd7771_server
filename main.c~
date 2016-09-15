@@ -45,7 +45,7 @@
 
 static struct process processes[MAX_PORCESS];
 static int fd_pos[MAX_PORCESS];
-treap_t *root = NULL;
+treap_t* root = NULL;
 
 static int listen_sock;
 static int efd;
@@ -72,19 +72,19 @@ int setNonblocking(int fd)
 
 struct process *find_empty_process_for_sock(int sock)
 {
-	if (sock >= 0) {
+	if(sock >= 0){
 		//printf("fd_pos:%d\n" , fd_pos[sock]);
-		if (fd_pos[sock] != -1) {
+		if(fd_pos[sock] != -1){
 			//puts("ok");
-			if (processes[fd_pos[sock]].sock == NO_SOCK) {
+			if(processes[fd_pos[sock]].sock == NO_SOCK){
 				//printf("sock1:%d\n" , fd_pos[sock]);
 				return &processes[fd_pos[sock]];
 			}
 		}
-
+		
 		int empty_process = first(root);
 		//printf("sock2:%d\n" , empty_process);
-		root = delete(root, empty_process);
+		root = delete(root , empty_process);
 		fd_pos[sock] = empty_process;
 		processes[empty_process].id = empty_process;
 		return &processes[empty_process];
@@ -94,11 +94,11 @@ struct process *find_empty_process_for_sock(int sock)
 struct process *find_process_by_sock(int sock)
 {
 	/*if (sock < MAX_PORCESS && sock >= 0 && processes[sock].sock == sock) {
-	   return &processes[sock];
-	   } else {
-	   return find_process_by_sock_slow(sock);
-	   } */
-	if (sock >= 0)
+		return &processes[sock];
+	} else {
+		return find_process_by_sock_slow(sock);
+	}*/
+	if(sock >= 0)
 		return &processes[fd_pos[sock]];
 }
 
@@ -414,8 +414,9 @@ int write_all(struct process *process, char *buf, int n)
 	int done_write = 0;
 	int total_bytes_write = 0;
 	while (!done_write && total_bytes_write != n) {
-		int bytes_write = write(process->sock, buf + total_bytes_write,
-					n - total_bytes_write);
+		int bytes_write =
+		    write(process->sock, buf + total_bytes_write,
+			  n - total_bytes_write);
 		if (bytes_write == -1) {
 			if (errno != EAGAIN) {
 				handle_error(process, "write");
@@ -463,8 +464,9 @@ void send_response(struct process *process)
 #ifdef USE_SENDFILE
 	// 使用linux sendfile函数
 	while (1) {
-		int s = sendfile(process->sock, process->fd, &process->read_pos,
-				 process->total_length - process->read_pos);
+		int s =
+		    sendfile(process->sock, process->fd, &process->read_pos,
+			     process->total_length - process->read_pos);
 		if (s == -1) {
 			if (errno != EAGAIN) {
 				handle_error(process, "sendfile");
@@ -488,10 +490,10 @@ void send_response(struct process *process)
 		int size_remaining = process->read_pos - process->write_pos;
 		if (size_remaining > 0) {
 			// 写入
-			int bytes_writen = write_all(process,
-						     process->buf +
-						     process->write_pos,
-						     size_remaining);
+			int bytes_writen =
+			    write_all(process,
+				      process->buf + process->write_pos,
+				      size_remaining);
 			process->write_pos += bytes_writen;
 			// 接下来判断是否写入完毕，如果是，继续读文件，否则return
 			if (bytes_writen != size_remaining) {
@@ -510,8 +512,9 @@ void send_response(struct process *process)
 		process->read_pos = 0;
 		process->write_pos = 0;
 		while (process->read_pos < BUF_SIZE) {
-			int bytes_read = read(process->fd, process->buf,
-					      BUF_SIZE - process->read_pos);
+			int bytes_read =
+			    read(process->fd, process->buf,
+				 BUF_SIZE - process->read_pos);
 			if (bytes_read == -1) {
 				if (errno != EAGAIN) {
 					handle_error(process, "read file");
@@ -534,7 +537,7 @@ void cleanup(struct process *process)
 	int s;
 	if (process->sock != NO_SOCK) {
 		fd_pos[process->sock] = -1;
-		root = insert(root, process->id);
+		root = insert(root , process->id);
 		//printf("%d\n" , first(root));
 		s = close(process->sock);
 		current_total_processes--;
@@ -635,7 +638,7 @@ void init_processes()
 	for (; i < MAX_PORCESS; i++) {
 		processes[i].sock = NO_SOCK;
 		fd_pos[i] = -1;
-		root = insert(root, i);
+		root = insert(root , i);
 	}
 
 }
@@ -661,7 +664,7 @@ int main(int argc, char *argv[])
 	}
 
 	init_processes();
-
+	
 	listen_sock = create_and_bind(argv[1]);
 	doc_root = argv[2];
 	if (listen_sock == -1)
@@ -698,7 +701,7 @@ int main(int argc, char *argv[])
 	while (1) {
 		int n, i;
 		//printf("first:%d\n" , first(root));
-
+		
 		n = epoll_wait(efd, events, MAXEVENTS, -1);
 		//printf("n:%d\n" , n);
 		if (n == -1) {
