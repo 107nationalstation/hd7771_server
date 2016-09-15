@@ -89,7 +89,7 @@ struct process *find_empty_process_for_sock(int sock)
 
 struct process *find_process_by_sock(int sock)
 {
-    if (sock >= 0)
+	if (sock >= 0)
 		return &processes[fd_pos[sock]];
 }
 
