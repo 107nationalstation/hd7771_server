@@ -73,17 +73,13 @@ int setNonblocking(int fd)
 struct process *find_empty_process_for_sock(int sock)
 {
 	if (sock >= 0) {
-		//printf("fd_pos:%d\n" , fd_pos[sock]);
 		if (fd_pos[sock] != -1) {
-			//puts("ok");
 			if (processes[fd_pos[sock]].sock == NO_SOCK) {
-				//printf("sock1:%d\n" , fd_pos[sock]);
 				return &processes[fd_pos[sock]];
 			}
 		}
 
 		int empty_process = first(root);
-		//printf("sock2:%d\n" , empty_process);
 		root = delete(root, empty_process);
 		fd_pos[sock] = empty_process;
 		processes[empty_process].id = empty_process;
@@ -93,12 +89,7 @@ struct process *find_empty_process_for_sock(int sock)
 
 struct process *find_process_by_sock(int sock)
 {
-	/*if (sock < MAX_PORCESS && sock >= 0 && processes[sock].sock == sock) {
-	   return &processes[sock];
-	   } else {
-	   return find_process_by_sock_slow(sock);
-	   } */
-	if (sock >= 0)
+    if (sock >= 0)
 		return &processes[fd_pos[sock]];
 }
 
@@ -168,7 +159,6 @@ struct process *accept_sock(int listen_sock)
 		}
 		struct process *process = find_empty_process_for_sock(infd);
 		current_total_processes++;
-		//printf("%d\n" , current_total_processes);
 		reset_process(process);
 		process->sock = infd;
 		process->fd = NO_FILE;
@@ -535,7 +525,6 @@ void cleanup(struct process *process)
 	if (process->sock != NO_SOCK) {
 		fd_pos[process->sock] = -1;
 		root = insert(root, process->id);
-		//printf("%d\n" , first(root));
 		s = close(process->sock);
 		current_total_processes--;
 		if (s == NO_SOCK) {
@@ -697,15 +686,12 @@ int main(int argc, char *argv[])
 	/* The event loop */
 	while (1) {
 		int n, i;
-		//printf("first:%d\n" , first(root));
 
 		n = epoll_wait(efd, events, MAXEVENTS, -1);
-		//printf("n:%d\n" , n);
 		if (n == -1) {
 			perror("epoll_wait");
 		}
 		for (i = 0; i < n; i++) {
-			//if(events[i].data.fd != listen_sock) printf("%d\n" , events[i].data.fd);
 			if ((events[i].events & EPOLLERR) ||
 			    (events[i].events & EPOLLHUP)) {
 				/* An error has occured on this fd, or the socket is not
