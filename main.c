@@ -113,8 +113,7 @@ struct process *accept_sock(int listen_sock)
 			infd = accept(listen_sock, &in_addr, &in_len);
 			if (infd == -1) {
 				if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-					/* We have processed all incoming
-					   connections. */
+					/* We have processed all incoming connections. */
 					break;
 				} else {
 					perror("accept");
@@ -130,8 +129,7 @@ struct process *accept_sock(int listen_sock)
 		infd = accept(listen_sock, &in_addr, &in_len);
 		if (infd == -1) {
 			if ((errno == EAGAIN) || (errno == EWOULDBLOCK)) {
-				/* We have processed all incoming
-				   connections. */
+				/* We have processed all incoming connections. */
 				break;
 			} else {
 				perror("accept");
@@ -139,11 +137,9 @@ struct process *accept_sock(int listen_sock)
 			}
 		}
 
-		getnameinfo(&in_addr, in_len,
-			    hbuf, sizeof hbuf,
-			    sbuf, sizeof sbuf, NI_NUMERICHOST | NI_NUMERICSERV);
-		/* Make the incoming socket non-blocking and add it to the
-		   list of fds to monitor. */
+		getnameinfo(&in_addr, in_len, hbuf, sizeof hbuf, sbuf,
+			    sizeof sbuf, NI_NUMERICHOST | NI_NUMERICSERV);
+		/* Make the incoming socket non-blocking and add it to the list of fds to monitor. */
 		s = setNonblocking(infd);
 		if (s == -1)
 			abort();
@@ -453,8 +449,9 @@ void send_response(struct process *process)
 #ifdef USE_SENDFILE
 	// 使用linux sendfile函数
 	while (1) {
-		int s = sendfile(process->sock, process->fd, &process->read_pos,
-				 process->total_length - process->read_pos);
+		int s =
+		    sendfile(process->sock, process->fd, &process->read_pos,
+			     process->total_length - process->read_pos);
 		if (s == -1) {
 			if (errno != EAGAIN) {
 				handle_error(process, "sendfile");
@@ -478,10 +475,10 @@ void send_response(struct process *process)
 		int size_remaining = process->read_pos - process->write_pos;
 		if (size_remaining > 0) {
 			// 写入
-			int bytes_writen = write_all(process,
-						     process->buf +
-						     process->write_pos,
-						     size_remaining);
+			int bytes_writen =
+			    write_all(process,
+				      process->buf + process->write_pos,
+				      size_remaining);
 			process->write_pos += bytes_writen;
 			// 接下来判断是否写入完毕，如果是，继续读文件，否则return
 			if (bytes_writen != size_remaining) {
@@ -500,8 +497,9 @@ void send_response(struct process *process)
 		process->read_pos = 0;
 		process->write_pos = 0;
 		while (process->read_pos < BUF_SIZE) {
-			int bytes_read = read(process->fd, process->buf,
-					      BUF_SIZE - process->read_pos);
+			int bytes_read =
+			    read(process->fd, process->buf,
+				 BUF_SIZE - process->read_pos);
 			if (bytes_read == -1) {
 				if (errno != EAGAIN) {
 					handle_error(process, "read file");
@@ -692,10 +690,9 @@ int main(int argc, char *argv[])
 			perror("epoll_wait");
 		}
 		for (i = 0; i < n; i++) {
-			if ((events[i].events & EPOLLERR) ||
-			    (events[i].events & EPOLLHUP)) {
-				/* An error has occured on this fd, or the socket is not
-				   ready for reading (why were we notified then?) */
+			if ((events[i].events & EPOLLERR)
+			    || (events[i].events & EPOLLHUP)) {
+				/* An error has occured on this fd, or the socket is not ready for reading (why were we notified then?) */
 				fprintf(stderr, "epoll error\n");
 				close(events[i].data.fd);
 				continue;
