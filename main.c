@@ -420,10 +420,13 @@ int write_all(struct process *process, char *buf, int n)
 void send_response_header(struct process *process)
 {
 	if (process->response_code != 200) {
+		puts("ok1");
 		//非200不进入send_response
 		int bytes_writen =
 		    write_all(process, process->buf + process->write_pos,
 			      strlen(process->buf) - process->write_pos);
+		for(int i = 0 ; i < bytes_writen ; ++ i)
+			printf("%c" , process->buf[i]);
 		if (bytes_writen == strlen(process->buf) + process->write_pos) {
 			// 写入完毕
 			cleanup(process);
@@ -434,6 +437,9 @@ void send_response_header(struct process *process)
 		int bytes_writen =
 		    write_all(process, process->buf + process->write_pos,
 			      strlen(process->buf) - process->write_pos);
+		puts("ok");
+		for(int i = 0 ; i < bytes_writen ; ++ i)
+			printf("%c" , process->buf[i]);
 		if (bytes_writen == strlen(process->buf) + process->write_pos) {
 			// 写入完毕
 			process->status = STATUS_SEND_RESPONSE;
