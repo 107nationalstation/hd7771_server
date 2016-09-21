@@ -32,10 +32,10 @@
 
 #define RFC1123_DATE_FMT "%a, %d %b %Y %H:%M:%S %Z"
 
-#define header_404 "HTTP/1.1 404 Not Found\r\nServer: clowwindyserver/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n\r\n<h1>Not found</h1>"
-#define header_400 "HTTP/1.1 400 Bad Request\r\nServer: clowwindyserver/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n\r\n<h1>Bad request</h1>"
-#define header_200_start "HTTP/1.1 200 OK\r\nServer: clowwindyserver/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n"
-#define header_304_start "HTTP/1.1 304 Not Modified\r\nServer: clowwindyserver/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n"
+#define header_404 "HTTP/1.1 404 Not Found\r\nServer: hd7771server/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n\r\n<h1>Not found</h1>"
+#define header_400 "HTTP/1.1 400 Bad Request\r\nServer: hd7771server/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n\r\n<h1>Bad request</h1>"
+#define header_200_start "HTTP/1.1 200 OK\r\nServer: hd7771server/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n"
+#define header_304_start "HTTP/1.1 304 Not Modified\r\nServer: hd7771server/1.0\r\nContent-Type: text/html\r\nConnection: Close\r\n"
 
 #define header_end "\r\n"
 
