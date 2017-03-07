@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
+#define _XOPEN_SOURCE
 #include <time.h>
 #include <langinfo.h>
 #include <locale.h>
@@ -13,6 +14,7 @@
 #include <sys/socket.h>
 #include <sys/epoll.h>
 #include <sys/stat.h>
+#include <sys/sendfile.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 
@@ -122,7 +124,7 @@ struct process *accept_sock(int listen_sock)
 			}
 			close(infd);
 
-			return;
+			return NULL;
 		}
 
 		in_len = sizeof in_addr;
@@ -250,8 +252,8 @@ void read_request(struct process *process)
 			return;
 		}
 		// get first line
-		int n_loc = (int)strchr(buf, '\n');
-		int space_loc = (int)strchr(buf + 4, ' ');
+		int n_loc = (size_t)strchr(buf, '\n');
+		int space_loc = (size_t)strchr(buf + 4, ' ');
 		if (n_loc <= space_loc) {
 			process->response_code = 400;
 			process->status = STATUS_SEND_RESPONSE_HEADER;
@@ -261,7 +263,7 @@ void read_request(struct process *process)
 			return;
 		}
 		char path[255];
-		int len = space_loc - (int)buf - 4;
+		int len = space_loc - (size_t)buf - 4;
 		if (len > MAX_URL_LENGTH) {
 			process->response_code = 400;
 			process->status = STATUS_SEND_RESPONSE_HEADER;

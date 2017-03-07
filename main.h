@@ -1,3 +1,6 @@
+#ifndef _MAIN_H
+#define _MAIN_H
+
 #define USE_SENDFILE 1
 
 #define MAXEVENTS	10240
@@ -47,3 +50,5 @@ void handle_error(struct process *process, char *error_string);
 void reset_process(struct process *process);
 
 int open_file(char *filename);
+
+#endif
