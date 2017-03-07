@@ -235,6 +235,7 @@ void read_request(struct process *process)
 		return;
 	}
 	buf[header_length] = 0;
+	printf("%s\n" , buf);
 	read_complete = (strstr(buf, "\n\n") != 0)
 	    || (strstr(buf, "\r\n\r\n") != 0);
 
@@ -438,7 +439,6 @@ void send_response_header(struct process *process)
 		int bytes_writen =
 		    write_all(process, process->buf + process->write_pos,
 			      strlen(process->buf) - process->write_pos);
-		puts("ok");
 		for(int i = 0 ; i < bytes_writen ; ++ i)
 			printf("%c" , process->buf[i]);
 		if (bytes_writen == strlen(process->buf) + process->write_pos) {
