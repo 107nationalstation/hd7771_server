@@ -422,7 +422,6 @@ int write_all(struct process *process, char *buf, int n)
 void send_response_header(struct process *process)
 {
 	if (process->response_code != 200) {
-		puts("ok1");
 		//非200不进入send_response
 		int bytes_writen =
 		    write_all(process, process->buf + process->write_pos,
